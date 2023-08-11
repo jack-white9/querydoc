@@ -5,6 +5,7 @@ import { ChromaClient, Collection, OpenAIEmbeddingFunction } from "chromadb";
 import chalk from "chalk";
 import fs from "fs";
 import { CollectionType, QueryResponse } from "chromadb/dist/main/types";
+import { getGptResponse } from "./llm/openai";
 
 const createCollection = async (): Promise<Collection> => {
   require("dotenv").config();
@@ -15,10 +16,9 @@ const createCollection = async (): Promise<Collection> => {
 
   const existingCollections: CollectionType[] = await client.listCollections();
   if (existingCollections.length) {
-    console.log("Deleting existing collection");
     await client.deleteCollection({ name: "document_collection" });
   }
-
+  console.log("Loading documents...");
   const collection = await client.createCollection({
     name: "document_collection",
     embeddingFunction: embedder,
@@ -61,7 +61,7 @@ const addDocsToCollection = async (
 
 const queryDocs = async (collection: Collection): Promise<QueryResponse> => {
   const results = await collection.query({
-    nResults: 2,
+    nResults: 5,
     queryTexts: ["Which country does this document concern?"],
   });
   return results;
@@ -71,7 +71,12 @@ const main = async (): Promise<void> => {
   const collection = await createCollection();
   await addDocsToCollection("documents/state_of_the_union.txt", collection);
   const results: QueryResponse = await queryDocs(collection);
-  console.log(results);
+
+  const response = await getGptResponse(
+    "Which country does this document concern?",
+    results.documents[0]
+  );
+  console.log(response.content);
 };
 
 program.command("test").description("Run a test command.").action(main);
