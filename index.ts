@@ -1,11 +1,10 @@
 #! /usr/bin/env node
-
+import fs from "fs";
+import chalk from "chalk";
 import { program } from "commander";
 import { ChromaClient, Collection, OpenAIEmbeddingFunction } from "chromadb";
-import chalk from "chalk";
-import fs from "fs";
 import { CollectionType, QueryResponse } from "chromadb/dist/main/types";
-import { getGptResponse } from "./llm/openai";
+import { OpenAIChatCompletionModel } from "./llm/OpenAIChatCompletionModel";
 
 const createCollection = async (): Promise<Collection> => {
   require("dotenv").config();
@@ -71,8 +70,8 @@ const main = async (): Promise<void> => {
   const collection = await createCollection();
   await addDocsToCollection("documents/state_of_the_union.txt", collection);
   const results: QueryResponse = await queryDocs(collection);
-
-  const response = await getGptResponse(
+  const llm = new OpenAIChatCompletionModel();
+  const response = await llm.getGptResponse(
     "Which country does this document concern?",
     results.documents[0]
   );
