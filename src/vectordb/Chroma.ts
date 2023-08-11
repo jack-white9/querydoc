@@ -42,10 +42,13 @@ export class Chroma {
     });
   }
 
-  async queryDocs(collection: Collection): Promise<QueryResponse> {
+  async queryDocs(
+    collection: Collection,
+    query: string
+  ): Promise<QueryResponse> {
     const results = await collection.query({
       nResults: 5,
-      queryTexts: ["Which country does this document concern?"],
+      queryTexts: [query],
     });
     return results;
   }
