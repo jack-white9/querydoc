@@ -10,7 +10,6 @@ export class OpenAIChatCompletionModel extends LargeLanguageModel {
       apiKey: process.env.OPENAI_API_KEY,
     });
     const openai = new OpenAIApi(configuration);
-    console.log("Generating AI response...");
 
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",

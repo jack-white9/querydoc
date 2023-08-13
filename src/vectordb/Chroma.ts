@@ -15,7 +15,7 @@ export class Chroma {
     if (existingCollections.length) {
       await client.deleteCollection({ name: "document_collection" });
     }
-    console.log("Loading documents...");
+
     const collection = await client.createCollection({
       name: "document_collection",
       embeddingFunction: embedder,
