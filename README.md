@@ -1,6 +1,6 @@
 # Querydoc
 
-A CLI tool for using text to query documents within a directory.
+A CLI tool to query documents from a local directory using a large language model (LLM).
 
 ## Installation
 
