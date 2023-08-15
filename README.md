@@ -32,3 +32,7 @@ querydoc query "<insert query>" --dir <insert directory>
 
 ![result](https://github.com/jack-white9/querydoc/assets/83393304/b367bebd-b8af-4cf9-9359-58c9badde523)
 
+## Roadmap
+- [ ] Improve accuracy of similarity search to improve LLM input
+- [ ] Upload package to npm
+
